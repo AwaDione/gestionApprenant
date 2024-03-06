@@ -16,7 +16,7 @@ int main(int argc, char const *argv[])
    
      loggedInUserIndex =authenticate(users,nbrUsers,username,password);
      if (loggedInUserIndex != -1) {
-                    printf("Connexion réussie. Bienvenue, %s !\n", username);
+
                      if(users[loggedInUserIndex].typeUser==0){
                         menuGestionDesEtudiants();
                         int choix=saisirInt(1,5,"Faites votre choix");
@@ -47,6 +47,7 @@ int main(int argc, char const *argv[])
                                 break;
                             
                             default:
+                                menuGestionDesEtudiants();
                                 break;
                             }
                         
