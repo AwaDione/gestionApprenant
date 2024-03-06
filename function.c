@@ -95,7 +95,22 @@ int loadUsers(USER users[]) {
     }
 
     int id = 0;
-    while (fscanf(file, "%u %s %s %s %u", &users[id].id,users[id].nom,users[id].prenom, users[id].mdp,&users[id].typeUser) == 5) {
+    while (fscanf(file, "%u %s %s %s %u %u %s", &users[id].id,users[id].nom,users[id].prenom, users[id].mdp,&users[id].typeUser,&users->class.id,users->class.nomC) == 7) {
+        id++;
+    }
+
+    fclose(file);
+    return id;
+}
+int loadClass(CLASS class[]) {
+    FILE *file = fopen(ListClass, "r");
+    if (file == NULL) {
+        perror("Erreur lors de l'ouverture du fichier");
+        exit(EXIT_FAILURE);
+    }
+
+    int id = 0;
+    while (fscanf(file, "%d %s ", &class[id].id, class[id].nomC) == 2) {
         id++;
     }
 
@@ -106,4 +121,43 @@ void menuConnexion(){
     puts("\t\tBienvenue");
     puts("\t-Entrer votre username :------------");
     puts("\t-Entrer votre mot de passe : *********");
+}
+void menuAdmin(){
+    puts("1………..GESTION DES ÉTUDIANTS");
+    puts("2………..GÉNÉRATION DE FICHIERS");
+    puts("3………..MARQUER LES PRÉSENCES");
+    puts("5………..ENVOYER UN MESSAGE");
+    puts("4………..QUITTER");
+  
+}
+void menuGestionDesEtudiants(){
+    puts("1………..Liste des classes");
+    puts("2………..Liste des etudiants");
+    puts("3………..Marquer présence");
+    puts("5………..Deconnexion");
+    
+}
+USER saisirUser() {
+    USER user;
+    
+    printf("Entrez votre mot de passe : ");
+    masquerMotDePasse(user.mdp, sizeof(user.mdp));
+    fflush(stdin); // Vidage du tampon d'entrée
+
+    printf("Entrez le nom de l'utilisateur : ");
+    scanf("%s", user.nom);
+    fflush(stdin);
+
+    printf("Entrez le prénom de l'utilisateur : ");
+    scanf("%s", user.prenom);
+    fflush(stdin);
+
+    // Utilisation de la fonction pour cacher le mot de passe
+
+    printf("Entrez le type de l'user (0 pour admin, 1 pour apprenant) : ");
+    int type=saisirInt(0,1,"Entrez 0 pour Admin ou 1 pour Apprenant");
+    
+    user.typeUser = (type == 0) ? admin : apprenant;
+
+    return user;
 }
